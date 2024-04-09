@@ -1,0 +1,88 @@
+Set parameter IntFeasTol to value 1e-07
+Gurobi Optimizer version 10.0.3 build v10.0.3rc0 (win64)
+
+CPU model: Intel(R) Core(TM) i7-10700 CPU @ 2.90GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 8 physical cores, 16 logical processors, using up to 16 threads
+
+Academic license 2435759 - for non-commercial use only - registered to ag___@stud.ntnu.no
+Optimize a model with 21993 rows, 16298 columns and 203170 nonzeros
+Model fingerprint: 0xa044727d
+Variable types: 0 continuous, 16298 integer (16154 binary)
+Coefficient statistics:
+  Matrix range     [3e-01, 1e+03]
+  Objective range  [1e+00, 4e+01]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [4e-02, 1e+04]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 5 objectives ... 
+---------------------------------------------------------------------------
+
+Multi-objectives: applying initial presolve ...
+---------------------------------------------------------------------------
+
+Presolve removed 16471 rows and 6044 columns
+Presolve time: 2.40s
+Presolved: 5522 rows and 10254 columns
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 () ...
+---------------------------------------------------------------------------
+
+Presolve removed 182 rows and 239 columns
+Presolve time: 0.28s
+Presolved: 5340 rows, 10015 columns, 60083 nonzeros
+Variable types: 0 continuous, 10015 integer (9916 binary)
+
+Root relaxation: objective -2.610000e+02, 2695 iterations, 0.19 seconds (0.30 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 -261.00000    0  275          - -261.00000      -     -    3s
+     0     0 -261.00000    0  272          - -261.00000      -     -    3s
+     0     0 -261.00000    0  541          - -261.00000      -     -    4s
+     0     0 -261.00000    0  543          - -261.00000      -     -    4s
+     0     0 -261.00000    0  549          - -261.00000      -     -    4s
+     0     0 -261.00000    0  215          - -261.00000      -     -    8s
+     0     0 -261.00000    0  246          - -261.00000      -     -    8s
+     0     0 -261.00000    0  226          - -261.00000      -     -   12s
+     0     0 -261.00000    0  569          - -261.00000      -     -   13s
+     0     0 -261.00000    0  237          - -261.00000      -     -   16s
+     0     0 -261.00000    0  508          - -261.00000      -     -   17s
+     0     0 -261.00000    0  376          - -261.00000      -     -   21s
+     0     0 -261.00000    0  617          - -261.00000      -     -   22s
+     0     0 -261.00000    0  370          - -261.00000      -     -   27s
+     0     0 -261.00000    0  292          - -261.00000      -     -   28s
+     0     2 -261.00000    0  292          - -261.00000      -     -   30s
+   448   375 -241.00000   28  292          - -261.00000      -   246   35s
+  1195   753 -261.00000    6  502          - -261.00000      -   190   41s
+  1890  1188 -260.57143   38  385          - -261.00000      -   179   45s
+
+Cutting planes:
+  Learned: 7
+  Gomory: 2
+  Cover: 302
+  Implied bound: 289
+  Clique: 2
+  MIR: 361
+  StrongCG: 51
+  Flow cover: 111
+  GUB cover: 6
+  Inf proof: 9
+  Zero half: 36
+  RLT: 242
+  Relax-and-lift: 77
+
+Explored 2295 nodes (547635 simplex iterations) in 53.20 seconds (64.92 work units)
+Thread count was 16 (of 16 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 53.20 seconds (64.92 work units)
+Model is infeasible
+

@@ -63,6 +63,18 @@ def initalize_lowest_heaviness_variables(model):
             h_under_dg[d, g] = model.addVar(vtype=gp.GRB.INTEGER, name=f'h_under_{d}_{g}')
     return h_under_dg
 
+def initalize_highest_avg_heaviness_variables(model):
+    h_avg_over_g = {}
+    for g in PROFESSION_GROUPS:
+        h_avg_over_g[g] = model.addVar(vtype=gp.GRB.INTEGER, name=f'h_avg_over_{g}')
+    return h_avg_over_g
+
+def initalize_lowest_avg_heaviness_variables(model):
+    h_avg_under_g = {}
+    for g in PROFESSION_GROUPS:
+        h_avg_under_g[g] = model.addVar(vtype=gp.GRB.INTEGER, name=f'h_avg_under_{g}')
+    return h_avg_under_g
+
 #TESTING
 #test_model = gp.Model("testModel")
 #x = initialize_arc_flow_variables(test_model)

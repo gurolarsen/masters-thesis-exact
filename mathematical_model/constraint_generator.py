@@ -58,13 +58,13 @@ def add_tw1_constraint(model, s_i, D_i, T_ij, bigM_ij_tw1, x_ijed):
                       for j in ACTIVITIES if i != j), name='tw1')
 
 
-def add_tw2_constraint(model, S_start_de, T_ij, bigM, x_ijed, s_i):
+def add_tw2_constraint(model, S_start_de, T_ij, bigM_j_tw2, x_ijed, s_i):
     print("Entered TW2")
     model.addConstrs(((gp.quicksum(S_start_de[d][e] * x_ijed[0, j, e, d]
                                         for d in DAYS
                                         for e in setOFE_iActDepo_jAct[d][0][j]))
                      + T_ij[0][j]
-                      - bigM * (1 - gp.quicksum(x_ijed[0, j, e, d]
+                      - bigM_j_tw2[j] * (1 - gp.quicksum(x_ijed[0, j, e, d]
                                         for d in DAYS
                                         for e in setOFE_iActDepo_jAct[d][0][j]))
                                  <= s_i[j]
@@ -81,9 +81,9 @@ def add_tw2_constraintG(model, S_start_de, T_ij, bigM, x_ijed, s_i):
 """
 
 #DEN FUNGERER SLIK DEN ER NÅ, MEN SYNES DET ER LITT RART AT DEN KLARER Å INDEKSERE PÅ DENNE VEIEN
-def add_tw3_constraint(model, s_i, D_i, T_ij, bigM, x_ijed, S_end_de):
+def add_tw3_constraint(model, s_i, D_i, T_ij, bigM_i_tw3, x_ijed, S_end_de):
     print("Entered TW3")
-    model.addConstrs((s_i[i] + D_i[i] + T_ij[i][0] - bigM * (1 - gp.quicksum(x_ijed[i, 0, e, d]
+    model.addConstrs((s_i[i] + D_i[i] + T_ij[i][0] - bigM_i_tw3[i] * (1 - gp.quicksum(x_ijed[i, 0, e, d]
                                         for d in DAYS
                                         for e in setOFE_iAct_jActDepo[d][i][0]))
                       <= gp.quicksum(S_end_de[d][e] * x_ijed[i, 0, e, d]
@@ -113,8 +113,6 @@ def add_tw3_constraint_NOT_IN_USE(model, s_i, D_i, T_ij, bigM, x_ijed, S_end_de)
                       for i in ACTIVITIES), name='tw3')
 """
 
-
-#Ny constraint for å få med delta variabelen
 def add_tw4_constraint(model, x_ijed, delta_i):
     print("Entered TW4")
     model.addConstrs((gp.quicksum(x_ijed[i, j, e, d]
@@ -147,7 +145,6 @@ def add_period2_constraint(model, x_ijed, A_bvcd, y_bc):
     model.addConstrs((gp.quicksum(x_ijed[i, j, e, d]
                                   for e in EMPLOYEES_ON_DAY[d]
                                   for i in setOFI_iActDepo_jAct[d][e][j])
-                                  #getSetOfiNY(d, EMPLOYEES_ON_DAY[d], ACTIVITIES_DEPOT, ACTIVITIES)[e][j])
                       - gp.quicksum(A_bvcd[b][v][c][d-1] * y_bc[b, c]
                                   for c in PATTERNS_FOR_TREATMENT[b]) <= 0
                      for b in TREATMENTS
@@ -178,21 +175,17 @@ def add_precedence3_constraint(model, x_ijed):
     print("Entered Prec3")
     model.addConstrs((gp.quicksum(x_ijed[i, j, e, d]
                                   for i in setOFI_iActDepo_jAct[d][e][j])
-                                  #getSetOfiNY(d, EMPLOYEES_ON_DAY[d], ACTIVITIES_DEPOT, ACTIVITIES)[e][j])
                       - gp.quicksum(x_ijed[i, k, e, d] for i in setOFI_iActDepo_jAct[d][e][k]) == 0
-                                  #getSetOfiNY(d, EMPLOYEES_ON_DAY[d], ACTIVITIES_DEPOT, ACTIVITIES)[e][k])
                       for d in DAYS
                       for e in EMPLOYEES_ON_DAY[d]
                       for j, k in SAME_EMPLOYEE_NODE_PAIRS
                       ), name='prec3')
 
-#HER ER DET NOE JEG LURER PÅ OM BLIR FEIL HER FORDI EMPLOYEES_ON_DAY_IN_GROUP[d][g] ikke går inn i funksjonen
 def add_heaviness1_constraint(model, H_i, x_ijed, h_over_dg):
     print("Heaviness1")
     model.addConstrs((gp.quicksum(H_i[j] * x_ijed[i, j, e, d]
                                   for i in ACTIVITIES_DEPOT
                                   for j in setOFJ_iActDepo_jAct[d][e][i])
-                                  #getSetOfjNY(d, EMPLOYEES_ON_DAY_IN_GROUP[d][g], ACTIVITIES_DEPOT, ACTIVITIES)[e][i])
                       <= h_over_dg[d, g]
                      for d in DAYS
                      for g in PROFESSION_GROUPS
@@ -204,7 +197,67 @@ def add_heaviness2_constraint(model, H_i, x_ijed, h_under_dg):
     model.addConstrs((gp.quicksum(H_i[j] * x_ijed[i, j, e, d]
                                   for i in ACTIVITIES_DEPOT
                                   for j in setOFJ_iActDepo_jAct[d][e][i]) >= h_under_dg[d, g]
-                                #getSetOfjNY(d,EMPLOYEES_ON_DAY_IN_GROUP[d][g], ACTIVITIES_DEPOT, ACTIVITIES)[e][i])
                      for d in DAYS
                      for g in PROFESSION_GROUPS
                      for e in EMPLOYEES_ON_DAY_IN_GROUP[d][g]), name='heaviness2')
+
+
+def add_heaviness3_constraint(model, H_i, x_ijed, h_avg_over_g):
+    print("Heaviness3")
+    model.addConstrs((gp.quicksum(H_i[j] * x_ijed[i, j, e, d]/ len(EMPLOYEES_ON_DAY_IN_GROUP[d][g])
+                                  for e in EMPLOYEES_ON_DAY_IN_GROUP[d][g]
+                                  for i in ACTIVITIES_DEPOT
+                                  for j in setOFJ_iActDepo_jAct[d][e][i])
+                      <= h_avg_over_g[g]
+                     for d in DAYS
+                     for g in PROFESSION_GROUPS), name='heaviness3')
+
+
+def add_heaviness4_constraint(model, H_i, x_ijed, h_avg_under_g):
+    print("Heaviness4")
+    model.addConstrs((gp.quicksum(H_i[j] * x_ijed[i, j, e, d]/ len(EMPLOYEES_ON_DAY_IN_GROUP[d][g])
+                                  for e in EMPLOYEES_ON_DAY_IN_GROUP[d][g]
+                                  for i in ACTIVITIES_DEPOT
+                                  for j in setOFJ_iActDepo_jAct[d][e][i])
+                      >= h_avg_under_g[g]
+                     for d in DAYS
+                     for g in PROFESSION_GROUPS), name='heaviness4')
+
+def add_subtour_contraint(model, SUB_SETS, x_ijed):
+    print("SubtourGenerator")
+    model.addConstrs((gp.quicksum( x_ijed[i, j, e, d]
+                                  for i in POS_SUBTOURS[d][e][S_index]
+                                  for j in POS_SUBTOURS[d][e][S_index] if checkxEksist(i,j,e,d)) <= len(POS_SUBTOURS[d][e][S_index]) -1
+
+                     for d in DAYS
+                     for e in EMPLOYEES_ON_DAY[d]
+                     for S_index in range (len(POS_SUBTOURS[d][e]))), name='subtour')
+
+
+#Denne funskjonene forutsetter at de logstikkansatte på jobb har påfølgende ansatt ID. 
+def add_symmterty_breaking_logPersonell(model, x_ijed):
+    print("SymmetryLogisticPersonel")
+    model.addConstrs((gp.quicksum( x_ijed[i, j, e, d]
+                                  for i in ACTIVITIES_DEPOT
+                                  for j in setOFJ_iActDepo_jAct[d][e][i])
+                      -  (gp.quicksum(x_ijed[i, j, e+1, d]
+                                  for i in ACTIVITIES_DEPOT
+                                  for j in setOFJ_iActDepo_jAct[d][e+1][i]))
+                                 <= 0
+                    for d in DAYS
+                    for e in EMPLOYEES_ON_DAY_IN_GROUP[d][3] if e != getEmplLargestNum(EMPLOYEES_ON_DAY_IN_GROUP[d][3])), name='tw2')
+
+def add_symmterty_breaking_syncAct(model, x_ijed):
+    print("SymmetrySyncAct")
+    model.addConstrs((gp.quicksum( e * x_ijed[l, i, e, d]
+                                  for d in DAYS
+                                  for e in EMPLOYEES_ON_DAY[d]
+                                  for l in setOFI_iActDepo_jAct[d][e][i])
+                      -  (gp.quicksum(e* x_ijed[l, j, e, d]
+                                  for d in DAYS
+                                  for e in EMPLOYEES_ON_DAY[d]
+                                  for l in setOFI_iActDepo_jAct[d][e][j]))
+                                 <= 0
+                    for i, j in SYNCHRONISED_NODE_PAIRS), name='tw2')
+
+    

@@ -33,6 +33,11 @@ def plot_result_arcs():
         print(f'dag {day}: ', arcs_employees[day])
         chosen_arcs = arcs_ij[day]
         #chosen_arcs = arcs_employees[day]
+        chosen_nodes = set() #ny og må testes. 
+        for arc in chosen_arcs: #ny
+            chosen_nodes.update(arc)
+
+        G.add_nodes_from(chosen_nodes, node_type='activity') #ny
 
         G.add_edges_from(chosen_arcs, edge_type='valgt')
         #G.add_weighted_edges_from(chosen_arcs, edge_type='valgt', weight='weight')

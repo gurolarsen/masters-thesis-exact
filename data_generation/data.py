@@ -2,7 +2,7 @@ import pandas as pd
 import os
 
 # Reading instance
-reading_instance_file = "base150a6e"
+reading_instance_file = "base121aSyncTest"
 print("RUNNING MODEL FOR TEST INSTANCE: ", reading_instance_file)
 df_nodes = pd.read_csv(os.getcwd()+'/Input/'+reading_instance_file+'/Nodes.csv')
 df_employees = pd.read_csv(os.getcwd()+'/Input/'+reading_instance_file+'/Employees.csv')

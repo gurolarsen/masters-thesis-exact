@@ -1,5 +1,6 @@
 from .data import *  #Her må det være punktum før data om arc_model skal kjøre og bare data om distance function skal kjøre. 
 
+
 DAYS = [1,2,3,4,5]                       #D
 skill_requirement_for_healthcare_activity = 2
 
@@ -106,5 +107,16 @@ for node in nested_dict_nodes:
     if nested_dict_nodes[node]["sameEmployeeActivityID"] != 0 and node < nested_dict_nodes[node]["sameEmployeeActivityID"] :
         SAME_EMPLOYEE_NODE_PAIRS.append((node, nested_dict_nodes[node]["sameEmployeeActivityID"]))
 
+
+
+#Her ser vi på alle mulige hvor det er.
+'''
+Alternativer: 
+1) Enten så kan vi sjekke her om det er mulig. Det er vanskelig fordi da må vi vite hvilken dag og ansatt det er, så ikke mulig
+2) Kalle på de funksjonene for å sjekke om det er mulig 
+
+
+
+'''
 
 

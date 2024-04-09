@@ -1,0 +1,94 @@
+Set parameter IntFeasTol to value 1e-07
+Gurobi Optimizer version 10.0.3 build v10.0.3rc0 (win64)
+
+CPU model: Intel(R) Core(TM) i7-10700 CPU @ 2.90GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 8 physical cores, 16 logical processors, using up to 16 threads
+
+Academic license 2435759 - for non-commercial use only - registered to ag___@stud.ntnu.no
+Optimize a model with 21993 rows, 16298 columns and 203170 nonzeros
+Model fingerprint: 0xa876c4ac
+Variable types: 0 continuous, 16298 integer (16154 binary)
+Coefficient statistics:
+  Matrix range     [3e-01, 1e+03]
+  Objective range  [1e+00, 4e+01]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [4e-02, 1e+04]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 5 objectives ... 
+---------------------------------------------------------------------------
+
+Multi-objectives: applying initial presolve ...
+---------------------------------------------------------------------------
+
+Presolve removed 16760 rows and 6109 columns
+Presolve time: 2.35s
+Presolved: 5233 rows and 10189 columns
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 () ...
+---------------------------------------------------------------------------
+
+Presolve removed 183 rows and 292 columns
+Presolve time: 0.30s
+Presolved: 5050 rows, 9897 columns, 58085 nonzeros
+Variable types: 0 continuous, 9897 integer (9798 binary)
+
+Root relaxation: objective -2.610000e+02, 4143 iterations, 0.37 seconds (0.54 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 -261.00000    0  314          - -261.00000      -     -    3s
+     0     0 -261.00000    0  392          - -261.00000      -     -    4s
+     0     0 -261.00000    0  420          - -261.00000      -     -    4s
+     0     0 -261.00000    0  410          - -261.00000      -     -    4s
+     0     0 -261.00000    0  647          - -261.00000      -     -    5s
+     0     0 -261.00000    0  619          - -261.00000      -     -    5s
+     0     0 -261.00000    0  618          - -261.00000      -     -    5s
+     0     0 -261.00000    0  604          - -261.00000      -     -    6s
+     0     0 -261.00000    0  603          - -261.00000      -     -    6s
+     0     0 -261.00000    0  600          - -261.00000      -     -    6s
+     0     0 -261.00000    0  313          - -261.00000      -     -   10s
+     0     0 -261.00000    0  322          - -261.00000      -     -   10s
+     0     0 -261.00000    0  554          - -261.00000      -     -   11s
+     0     0 -261.00000    0  394          - -261.00000      -     -   17s
+     0     0 -261.00000    0  477          - -261.00000      -     -   17s
+     0     0 -261.00000    0  564          - -261.00000      -     -   19s
+     0     0 -261.00000    0  560          - -261.00000      -     -   19s
+     0     0 -261.00000    0  367          - -261.00000      -     -   24s
+     0     0 -261.00000    0  555          - -261.00000      -     -   25s
+     0     0 -261.00000    0  377          - -261.00000      -     -   30s
+     0     0 -261.00000    0  322          - -261.00000      -     -   30s
+     0     2 -261.00000    0  312          - -261.00000      -     -   33s
+    47    52 -261.00000    7  375          - -261.00000      -   905   35s
+   952   380 -243.00000   47  218          - -261.00000      -   336   41s
+  1857   810 infeasible   42               - -261.00000      -   281   45s
+
+Cutting planes:
+  Learned: 7
+  Gomory: 6
+  Cover: 274
+  Implied bound: 273
+  Clique: 10
+  MIR: 299
+  StrongCG: 62
+  Flow cover: 64
+  GUB cover: 1
+  Inf proof: 12
+  Zero half: 42
+  RLT: 230
+  Relax-and-lift: 54
+
+Explored 3293 nodes (843314 simplex iterations) in 55.89 seconds (69.12 work units)
+Thread count was 16 (of 16 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 55.89 seconds (69.12 work units)
+Model is infeasible
+

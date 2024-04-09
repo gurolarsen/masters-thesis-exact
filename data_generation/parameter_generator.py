@@ -2,6 +2,7 @@ from .data import *
 from .set_generator import *
 import math
 
+
 D_i = {key: int for key in ACTIVITIES}
 T_earliest_i =  {key: int for key in ACTIVITIES} #idexed by day and employee
 T_latest_i = {key: int for key in ACTIVITIES}
@@ -81,25 +82,26 @@ for arc in dict_distances:
     nodes_list = list(nodes.split(", "))
     T_ij[int(nodes_list[0])][int(nodes_list[1])] = float(arc['0'])
 
+S_end_de_as_list = []
+S_start_de_as_list = []
+for day in DAYS:
+    for employee in EMPLOYEES_ON_DAY[day]:
+        S_start_de_as_list.append(S_start_de[day][employee])
+        S_end_de_as_list.append(S_end_de[day][employee])
 
 # big M_ij for constraints tw1
 bigM_ij_tw1 = {activity_i: {activity_j: int for activity_j in ACTIVITIES} for activity_i in ACTIVITIES}
 for i in ACTIVITIES:
     for j in ACTIVITIES:
-        if i == j:
-            continue
-        bigM_ij_tw1[i][j] = 1 + T_latest_i[i] + D_i[i] + math.ceil(T_ij[i][j])
+        bigM_ij_tw1[i][j] = T_latest_i[i] + D_i[i] + math.ceil(T_ij[i][j])
 
-# big M_ij for constraints tw2
-bigM_ijde_tw2 = {activity_i: {activity_j: {day_d: {employee_e: int for employee_e in EMPLOYEES_ON_DAY[day_d]} for day_d in DAYS} for activity_j in ACTIVITIES} for activity_i in [0]}
+# big M_j for constraints tw2
+bigM_j_tw2 = {activity_j: int for activity_j in  ACTIVITIES}
 for j in ACTIVITIES:
-    for d in DAYS:
-        for e in EMPLOYEES_ON_DAY[d]:
-            bigM_ijde_tw2[0][j][d][e] = 1 + S_start_de[d][e] + math.ceil(T_ij[0][j])
+    bigM_j_tw2[j] = math.ceil(T_ij[0][j]) 
 
-# big M_ij for constraints tw3
-bigM_ijde_tw3 = {activity_i: {activity_j: {day_d: {employee_e: int for employee_e in EMPLOYEES_ON_DAY[day_d]} for day_d in DAYS} for activity_j in [0]} for activity_i in ACTIVITIES}
+
+# big M_i for constraints tw3
+bigM_i_tw3 = {activity_j: int for activity_j in  ACTIVITIES}
 for i in ACTIVITIES:
-    for d in DAYS:
-        for e in EMPLOYEES_ON_DAY[d]:
-            bigM_ijde_tw3[i][0][d][e] = 1 + S_end_de[d][e] - T_latest_i[i] - D_i[i] - math.ceil(T_ij[i][0])
+    bigM_i_tw3[i] = D_i[i] + math.ceil(T_ij[i][0]) + T_latest_i[i]
