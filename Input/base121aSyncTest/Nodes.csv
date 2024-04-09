@@ -1,4 +1,4 @@
-id,patient,activityExplaination,earliestStartTime,latestStartTime,activityDuration,synchronisation,skillRequirement,presedence,sameEmployeeActivityID,visit,treatment,treatmentExplaination,patterns,patternType,numOfVisits,suitability,location,continuityGroup,heaviness,employeeRestriction,employeeHistory
+activityId,patientId,activityExplaination,earliestStartTime,latestStartTime,duration,synchronisation,skillRequirement,presedence,sameEmployeeActivityId,visitId,treatmentId,treatmentExplaination,patterns,patternType,numOfVisits,utility,location,continuityGroup,heaviness,employeeRestriction,employeeHistory
 1,1,healthcare,600,630,90,0,2,(),0,1,1,explanation,(1),1,5,2,"(59.8955, 10.8105)",1,1,(),"(3,6,2,3,3,2,2,2,2)"
 2,1,healthcare,600,630,90,0,2,(),0,2,1,explanation,(1),1,5,2,"(59.8955, 10.8105)",1,1,(),"(3,6,2,3,3,2,2,2,2)"
 3,1,healthcare,600,630,90,0,2,(),0,3,1,explanation,(1),1,5,2,"(59.8955, 10.8105)",1,1,(),"(3,6,2,3,3,2,2,2,2)"

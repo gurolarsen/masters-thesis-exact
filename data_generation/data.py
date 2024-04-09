@@ -2,12 +2,46 @@ import pandas as pd
 import os
 
 # Reading instance
-reading_instance_file = "base121aSyncTest"
+reading_instance_file = "newDataStructure"
 print("RUNNING MODEL FOR TEST INSTANCE: ", reading_instance_file)
-df_nodes = pd.read_csv(os.getcwd()+'/Input/'+reading_instance_file+'/Nodes.csv')
-df_employees = pd.read_csv(os.getcwd()+'/Input/'+reading_instance_file+'/Employees.csv')
+df_nodes = pd.read_csv(os.getcwd()+'/Input/'+reading_instance_file+'/activitiesNewTimeWindows.csv')
+df_employees = pd.read_csv(os.getcwd()+'/Input/'+reading_instance_file+'/employees.csv')
 df_shifts = pd.read_csv(os.getcwd()+'/Input/Shifts.csv')
 df_patterns = pd.read_csv(os.getcwd()+'/Input/Patterns.csv')
+
+# Funksjon for å konvertere formatet på nextPrece-kolonnen
+def convert_precedence_format(s):
+    if isinstance(s, str):
+        parts = s.split(", ")
+        if ":" in s:
+            keys = [part.split(":")[0] for part in parts if ":" in part]
+            value = parts[0].split(":")[1].strip() if ":" in parts[0] else ""
+            return f"({', '.join(keys)}: {value})" if keys else "()"
+        else:
+            return f"({s})"
+    elif pd.isna(s):
+        return "()"
+    else:
+        return f"({s})"
+df_nodes['nextPrece'] = df_nodes['nextPrece'].apply(convert_precedence_format)
+
+# Funksjon for å konvertere formatet på employee history fra "[1, 2, 3]" til "(1, 2, 3)"
+def convert_employee_history_format(s):
+    if not s or s == "[]":
+        return "()"
+    elif pd.isna(s):
+        return "()"
+    else:
+        return s.replace('[', '(').replace(']', ')')
+df_nodes['employeeHistory'] = df_nodes['employeeHistory'].apply(convert_employee_history_format)
+
+# Funksjon for å konvertere formatet på employee restriction"
+def convert_employee_restriction_format(s):
+    if pd.isna(s):
+        return "()"
+    else:
+        return s.replace('[', '(').replace(']', ')')
+df_nodes['employeeRestriction'] = df_nodes['employeeRestriction'].apply(convert_employee_restriction_format)
 
 dict_nodes = df_nodes.to_dict(orient='records')
 dict_employees = df_employees.to_dict(orient='records')
@@ -51,7 +85,7 @@ def clean_nodes_data(dict):
                 value_list = value.strip('()').split(', ')
                 record[key] = value_list
         # Nested dictionary where the key is the Activity id
-        employee_id = record['id']
+        employee_id = record['activityId']
         nested_dict_nodes[employee_id] = record
         # Convert numbers from str to int
         convert_numbers_to_int_or_float(nested_dict_nodes)
@@ -68,11 +102,11 @@ def clean_employee_data(dict):
         #Cleaning
         for key, value in record.items():
             #Convert values with parantheses to lists
-            if isinstance(value, str) and '(' in value and ')' in value:
-                value_list = value.strip('()').split(', ')
+            if isinstance(value, str) and '[' in value and ']' in value:
+                value_list = value.strip('[]').split(', ')
                 record[key] = value_list
         #Nested dictionary where the key is the EmployeeID
-        employee_id = record['EmployeeID']
+        employee_id = record['employeeId']
         nested_dict_employees[employee_id] = record
         # Convert numbers from str to int
         convert_numbers_to_int_or_float(nested_dict_employees)

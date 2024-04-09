@@ -3,7 +3,7 @@ from .parameter_generator import *
 from .data import *
 
 def checkSkillRequirement(i,e):
-    if nested_dict_employees[e].get('SkillLevel') - nested_dict_nodes[i].get('skillRequirement') >= 0:
+    if nested_dict_employees[e].get('professionalLevel') - nested_dict_nodes[i].get('skillRequirement') >= 0:
         return True
     return False
 
@@ -30,8 +30,8 @@ def getHistoryList(list_tuple_in_list):
     return employee_history_list
 
 for node in nested_dict_nodes:
-    if len(getHistoryList(nested_dict_nodes[node]['employeeHistory'])) >= len(patient_history[nested_dict_nodes[node]['patient']]):
-        patient_history[nested_dict_nodes[node]['patient']] = getHistoryList(nested_dict_nodes[node]['employeeHistory'])
+    if len(getHistoryList(nested_dict_nodes[node]['employeeHistory'])) >= len(patient_history[nested_dict_nodes[node]['patientId']]):
+        patient_history[nested_dict_nodes[node]['patientId']] = getHistoryList(nested_dict_nodes[node]['employeeHistory'])
 
 #Lager settet av kontinuitetsgruppr
     if nested_dict_nodes[node]['continuityGroup'] not in continuity_groups:
@@ -68,7 +68,7 @@ def checkContinuity(i, e, d):
 #ANTAR AT VI LESER HELE PASIENTHISTORIKKEN,
 # FORDI DET IKKE VIL VÆRE GUNSTIG Å SETTE INN MER PASIENTHUSTORIKK ENN VI SKAL LESE
 def checkContinuity(i, e, d):
-    patient = nested_dict_nodes[i].get('patient')
+    patient = nested_dict_nodes[i].get('patientId')
     if i not in ACTIVITIES_HEALTH_CARE or len(patient_history[patient]) == 0:
         return True
     #MA FØRST TELLE EGET ANTALL.
@@ -107,8 +107,8 @@ def checkTimeWindow(i,j):
     return T_earliest_i[i] + D_i[i] + T_ij[i][j] <= T_latest_i[j]
 
 def checkPattern(i, d):
-    for pattern in A_bvcd[nested_dict_nodes[i].get('treatment')][nested_dict_nodes[i].get('visit')]:
-        if A_bvcd[nested_dict_nodes[i].get('treatment')][nested_dict_nodes[i].get('visit')][pattern][d - 1] == 1:
+    for pattern in A_bvcd[nested_dict_nodes[i].get('treatmentId')][nested_dict_nodes[i].get('visitId')]:
+        if A_bvcd[nested_dict_nodes[i].get('treatmentId')][nested_dict_nodes[i].get('visitId')][pattern][d - 1] == 1:
             return True
     return False
 

@@ -87,7 +87,7 @@ def run_model():
         add_subtour_contraint(m,POS_SUBTOURS, x_ijed)    
         #add_symmterty_breaking_logPersonell(m, x_ijed)
         add_symmterty_breaking_syncAct(m, x_ijed)
-        m.addConstr(h_p[22]==1,  name='lock_patient')
+        #m.addConstr(h_p[22]==1,  name='lock_patient')
         
         # Åpne filen for å skrive
         with open("results.txt", "w") as log_file:
