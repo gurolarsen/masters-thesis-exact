@@ -39,12 +39,12 @@ for node in nested_dict_nodes:
 
 contintyGroup_Bar = {group: {'bar': float, 'numEmp': int} for group in continuity_groups}
 #DETTE UNDER  MA  SPESSIFISERES I FORHOLD TIL DATASETTET DET KJORES PÅ. ER PARAMETERE.
-contintyGroup_Bar[1]['bar'] = 0.4
-contintyGroup_Bar[2]['bar'] = 0.3
-contintyGroup_Bar[3]['bar'] = 0.1
-contintyGroup_Bar[1]['numEmp'] = 1
-contintyGroup_Bar[2]['numEmp'] = 2
-contintyGroup_Bar[3]['numEmp'] = 5
+contintyGroup_Bar[1]['bar'] = 0
+contintyGroup_Bar[2]['bar'] = 0
+contintyGroup_Bar[3]['bar'] = 0
+contintyGroup_Bar[1]['numEmp'] = 100
+contintyGroup_Bar[2]['numEmp'] = 100
+contintyGroup_Bar[3]['numEmp'] = 100
 
 
 #DEN UNDER ER GAMMEL FOR Å SJEKKE KONTINUITET, KAN NOK SLETTES ETTERHVERT

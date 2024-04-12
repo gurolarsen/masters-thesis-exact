@@ -33,7 +33,7 @@ def run_model():
                         for p in PATIENTS
                         for i in ACTIVITIES_HEALTH_CARE_FOR_PATIENT[p]),
             index=0, priority=5, weight=-1)
-
+        
         m.setObjectiveN(
             gp.quicksum(h_avg_over_g[g] - h_avg_under_g[g]
                         for g in PROFESSION_GROUPS),
@@ -52,7 +52,7 @@ def run_model():
                         for j in ACTIVITIES
                         for i in setOFI_iActDepo_jAct[d][e][j]),
             index=3, priority=2)
-
+        
         m.setObjectiveN(
             gp.quicksum(T_ij[i][j] * x_ijed[i, j, e, d]
                         for d in DAYS
@@ -60,6 +60,7 @@ def run_model():
                         for i in ACTIVITIES_DEPOT
                         for j in setOFJ_iActDepo_jActDepo[d][e][i]),
             index=4, priority=1)
+        
 
 
     
