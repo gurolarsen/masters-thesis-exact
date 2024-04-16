@@ -123,12 +123,19 @@ def convert_dict_in_string_format_to_dict(string_dict):
 
 
 C_ie = {hc_activity: {employee: [] for employee in EMPLOYEES} for hc_activity in ACTIVITIES_HEALTH_CARE}  
+print("ACTIVITIES_HEALTH_CARE", ACTIVITIES_HEALTH_CARE)
+
+#TODO: Fikse så vi ikke henter på i-1, rotete sånn det står nå, men tror det er riktig
 for i in ACTIVITIES_HEALTH_CARE: 
-    prefered_employee_information_dict = convert_dict_in_string_format_to_dict(df_nodes.loc[i,"employeeHistory"])
+    
+    prefered_employee_information_dict = convert_dict_in_string_format_to_dict(df_nodes.loc[i-1]["employeeHistory"])
     print(prefered_employee_information_dict)
+    print("activity", i)
     for e in EMPLOYEES: 
-        for score, employee in prefered_employee_information_dict.items(): 
-            if employee == e: 
+        for score, employee_list in prefered_employee_information_dict.items(): 
+            if isinstance(employee_list, int): 
+                employee_list = [employee_list]
+            if e in employee_list: 
                 C_ie[i][e] = score
         if C_ie[i][e] == []: 
             C_ie[i][e] = 0 
