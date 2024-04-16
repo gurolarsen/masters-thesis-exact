@@ -13,6 +13,8 @@ continuity_groups = []
 #print("nested_dict_nodes[17]['employeeHistory']", nested_dict_nodes[17]['employeeHistory'])
 #print("type(nested_dict_nodes[17]['employeeHistory']", type(nested_dict_nodes[17]['employeeHistory']))
 
+#Gammelt, trengs ikke lenger 
+'''
 #['1,2,3,4,5,6']
 def getHistoryList(list_tuple_in_list):
     employee_history_list = []
@@ -28,14 +30,16 @@ def getHistoryList(list_tuple_in_list):
             for employee in list_tuple_in_list[0].replace("'", "").split(","):
                 employee_history_list.append(int(employee))
     return employee_history_list
-
+'''
 for node in nested_dict_nodes:
+    '''
     if len(getHistoryList(nested_dict_nodes[node]['employeeHistory'])) >= len(patient_history[nested_dict_nodes[node]['patientId']]):
         patient_history[nested_dict_nodes[node]['patientId']] = getHistoryList(nested_dict_nodes[node]['employeeHistory'])
-
+    '''
 #Lager settet av kontinuitetsgruppr
     if nested_dict_nodes[node]['continuityGroup'] not in continuity_groups:
         continuity_groups.append(nested_dict_nodes[node]['continuityGroup'])
+
 
 contintyGroup_Bar = {group: {'bar': float, 'numEmp': int} for group in continuity_groups}
 #DETTE UNDER  MA  SPESSIFISERES I FORHOLD TIL DATASETTET DET KJORES PÅ. ER PARAMETERE.

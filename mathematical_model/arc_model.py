@@ -37,7 +37,16 @@ def run_model():
             gp.quicksum(S_p[p] * delta_i[i]
                         for p in PATIENTS
                         for i in ACTIVITIES_HEALTH_CARE_FOR_PATIENT[p]),
-            index=0, priority=3, weight=-1)
+            index=0, priority=4, weight=-1)
+        
+        #Kommentar om j og i 
+        m.setObjectiveN(
+            gp.quicksum(C_ie[j][e] * x_ijed[i, j, e, d]
+                        for d in DAYS
+                        for e in EMPLOYEES_ON_DAY[d]
+                        for j in ACTIVITIES_HEALTH_CARE
+                        for i in setOFI_iActDepo_jAct[d][e][j]),
+            index=1, priority=3, weight=-1)
         
         m.setObjectiveN(
             weight_WW*gp.quicksum(h_avg_over_g[g] - h_avg_under_g[g]
@@ -52,7 +61,7 @@ def run_model():
                         for e in EMPLOYEES_ON_DAY[d]
                         for j in ACTIVITIES
                         for i in setOFI_iActDepo_jAct[d][e][j]),
-            index=1, priority=2)
+            index=2, priority=2)
         
         m.setObjectiveN(
             gp.quicksum(T_ij[i][j] * x_ijed[i, j, e, d]
@@ -60,7 +69,7 @@ def run_model():
                         for e in EMPLOYEES_ON_DAY[d]
                         for i in ACTIVITIES_DEPOT
                         for j in setOFJ_iActDepo_jActDepo[d][e][i]),
-            index=4, priority=1)
+            index=3, priority=1)
             
         # CONSTRAINTS
         add_vrp1_constraint(m, x_ijed, h_p)

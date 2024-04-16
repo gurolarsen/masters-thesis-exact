@@ -1,7 +1,7 @@
 from .data import *
 from .set_generator import *
 import math
-
+import ast
 from .distance_matrix import travel_matrix
 
 
@@ -116,3 +116,28 @@ for j in ACTIVITIES:
 bigM_i_tw3 = {activity_j: int for activity_j in  ACTIVITIES}
 for i in ACTIVITIES:
     bigM_i_tw3[i] = D_i[i] + math.ceil(T_ij[i][0]) + T_latest_i[i]
+
+#Dette under er nytt fra 16.04 for masteroppgave 
+def convert_dict_in_string_format_to_dict(string_dict): 
+    return ast.literal_eval(string_dict)
+
+
+C_ie = {hc_activity: {employee: [] for employee in EMPLOYEES} for hc_activity in ACTIVITIES_HEALTH_CARE}  
+for i in ACTIVITIES_HEALTH_CARE: 
+    prefered_employee_information_dict = convert_dict_in_string_format_to_dict(df_nodes.loc[i,"employeeHistory"])
+    print(prefered_employee_information_dict)
+    for e in EMPLOYEES: 
+        for score, employee in prefered_employee_information_dict.items(): 
+            if employee == e: 
+                C_ie[i][e] = score
+        if C_ie[i][e] == []: 
+            C_ie[i][e] = 0 
+
+
+        
+print("KOMMER GJENNOM")
+print(C_ie)
+print("C_ie", C_ie)
+
+#Key er score, og listen er ansattte som er preferert
+#Står verdier for alle, men det gjelder bare helseaktivitetene ¨
