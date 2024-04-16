@@ -59,7 +59,7 @@ def run_model():
             + weight_S*gp.quicksum(x_ijed[i, j, e, d] * (Q_e[e] - Q_i[j])
                         for d in DAYS
                         for e in EMPLOYEES_ON_DAY[d]
-                        for j in ACTIVITIES
+                        for j in ACTIVITIES_WITHOUT_DUMMY
                         for i in setOFI_iActDepo_jAct[d][e][j]),
             index=2, priority=2)
         

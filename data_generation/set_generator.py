@@ -11,6 +11,9 @@ VISITS = []                             #V
 ACTIVITIES_DEPOT = []                   #N^0 #Ikke lost enda, usikker på hvordan skal se ut
 ACTIVITIES_HEALTH_CARE = []
 
+ACTIVITIES_WITHOUT_DUMMY = []
+
+
 
 for node in dict_nodes:
 #Folger rekkefølgen pa sets fra matematisk modell
@@ -22,6 +25,9 @@ for node in dict_nodes:
         VISITS.append(node['visitId'])
     if node['skillRequirement'] >= skill_requirement_for_healthcare_activity:
         ACTIVITIES_HEALTH_CARE.append((node['activityId']))
+    if node['activityType'] != "D": 
+        ACTIVITIES_WITHOUT_DUMMY.append((node['activityId']))
+
 
 
 ACTIVITIES_DEPOT = ACTIVITIES.copy()
