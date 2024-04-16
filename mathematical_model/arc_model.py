@@ -10,6 +10,12 @@ from mathematical_model.variable_generator import *
 from mathematical_model.constraint_generator import *
 from data_generation.parameter_generator import *
 
+# Weights for objectives
+weight_C = 0.0              # Max continuity of care
+weight_DW = 0.3             # Balance daily workload
+weight_WW = 0.3             # Balance weekly workload
+weight_S = 0.4              # Min skill difference
+weight_SG = 0.0             # Balance specialist/generalist
 
 def run_model():
     try:
@@ -27,31 +33,26 @@ def run_model():
         h_avg_under_g = initalize_lowest_avg_heaviness_variables(m)
 
         # OBJECTIVE
-        
         m.setObjectiveN(
             gp.quicksum(S_p[p] * delta_i[i]
                         for p in PATIENTS
                         for i in ACTIVITIES_HEALTH_CARE_FOR_PATIENT[p]),
-            index=0, priority=5, weight=-1)
+            index=0, priority=3, weight=-1)
         
         m.setObjectiveN(
-            gp.quicksum(h_avg_over_g[g] - h_avg_under_g[g]
-                        for g in PROFESSION_GROUPS),
-            index=1, priority=4)
-        
-        m.setObjectiveN(
-            gp.quicksum(h_over_dg[d, g] - h_under_dg[d, g]
-                        for d in DAYS
-                        for g in EMPLOYEES_ON_DAY_IN_GROUP[d]),
-            index=2, priority=3)
+            weight_WW*gp.quicksum(h_avg_over_g[g] - h_avg_under_g[g]
+                        for g in PROFESSION_GROUPS)
 
-        m.setObjectiveN(
-            gp.quicksum(x_ijed[i, j, e, d] * (Q_e[e] - Q_i[j])
+            + weight_DW*gp.quicksum(h_over_dg[d, g] - h_under_dg[d, g]
+                        for d in DAYS
+                        for g in EMPLOYEES_ON_DAY_IN_GROUP[d])
+
+            + weight_S*gp.quicksum(x_ijed[i, j, e, d] * (Q_e[e] - Q_i[j])
                         for d in DAYS
                         for e in EMPLOYEES_ON_DAY[d]
                         for j in ACTIVITIES
                         for i in setOFI_iActDepo_jAct[d][e][j]),
-            index=3, priority=2)
+            index=1, priority=2)
         
         m.setObjectiveN(
             gp.quicksum(T_ij[i][j] * x_ijed[i, j, e, d]
@@ -60,10 +61,7 @@ def run_model():
                         for i in ACTIVITIES_DEPOT
                         for j in setOFJ_iActDepo_jActDepo[d][e][i]),
             index=4, priority=1)
-        
-
-
-    
+            
         # CONSTRAINTS
         add_vrp1_constraint(m, x_ijed, h_p)
         add_vrp2_constraint(m, x_ijed)
@@ -137,6 +135,43 @@ def run_model():
         print(f'Encountered an attribute error: {e}')
 
 print(run_model())
+
+#Objektiv fra prosjektoppgaven
+'''
+m.setObjectiveN(
+    gp.quicksum(S_p[p] * delta_i[i]
+                for p in PATIENTS
+                for i in ACTIVITIES_HEALTH_CARE_FOR_PATIENT[p]),
+    index=0, priority=5, weight=-1)
+
+m.setObjectiveN(
+    gp.quicksum(h_avg_over_g[g] - h_avg_under_g[g]
+                for g in PROFESSION_GROUPS),
+    index=1, priority=4)
+
+m.setObjectiveN(
+    gp.quicksum(h_over_dg[d, g] - h_under_dg[d, g]
+                for d in DAYS
+                for g in EMPLOYEES_ON_DAY_IN_GROUP[d]),
+    index=2, priority=3)
+
+m.setObjectiveN(
+    gp.quicksum(x_ijed[i, j, e, d] * (Q_e[e] - Q_i[j])
+                for d in DAYS
+                for e in EMPLOYEES_ON_DAY[d]
+                for j in ACTIVITIES
+                for i in setOFI_iActDepo_jAct[d][e][j]),
+    index=3, priority=2)
+
+m.setObjectiveN(
+    gp.quicksum(T_ij[i][j] * x_ijed[i, j, e, d]
+                for d in DAYS
+                for e in EMPLOYEES_ON_DAY[d]
+                for i in ACTIVITIES_DEPOT
+                for j in setOFJ_iActDepo_jActDepo[d][e][i]),
+    index=4, priority=1)
+'''
+
 #Under er et helt vanlig objektiv som funker
 """
   m.setObjective(
