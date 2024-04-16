@@ -1,4 +1,5 @@
 import pandas as pd
+import copy
 import os
 
 # Reading instance
@@ -27,18 +28,15 @@ def add_dummy_nodes(df_nodes, df_employees, file_path):
     for employee_id in df_employees['employeeId']:
         if employee_id not in employees:
             employees.append(employee_id)
-    print("employees", employees)
     
     dummy_activities = []
     restricted_employees = employees
     emp_count = 0
 
-    for _, emp_row in df_employees.iterrows():
-        emp_count += 1
-        for remp in restricted_employees:
-            if remp == emp_count:
-                restricted_employees.remove(remp)
-        print('restricted', restricted_employees)
+   
+    for empl in employees:
+        restricted_employees = copy.copy(employees)
+        restricted_employees.remove(empl)
         for day in days:
             max_activity_id += 1
             max_visit_id += 1
@@ -56,8 +54,8 @@ def add_dummy_nodes(df_nodes, df_employees, file_path):
                 'visitId': max_visit_id, 
                 'treatmentId': max_treatment_id,
                 'location': '(59.9365, 10.7396)',
-                'employeeRestriction': [restricted_employees],
-                'heaviness': 1,
+                #'employeeRestriction': [restricted_employees],
+                'heaviness': 0,
                 'utility': 0,
                 'allocation': 0, 
                 'patternType': 6,
@@ -68,8 +66,7 @@ def add_dummy_nodes(df_nodes, df_employees, file_path):
                 't_complexity': 0,
                 'nActInPatient': 1,
             }
-        dummy_activities.append(dummy_activity)
-        restricted_employees.append(remp)
+            dummy_activities.append(dummy_activity)
 
     df_dummy_activities = pd.DataFrame(dummy_activities)
     df_nodes_new = pd.concat([df_nodes_new, df_dummy_activities], ignore_index=True)
