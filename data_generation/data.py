@@ -4,10 +4,80 @@ import os
 # Reading instance
 reading_instance_file = "newDataStructure"
 print("RUNNING MODEL FOR TEST INSTANCE: ", reading_instance_file)
+#Her kan jeg lage funksjon som adder ekstra aktiviteter som er dumme:))
 df_nodes = pd.read_csv(os.getcwd()+'/Input/'+reading_instance_file+'/activitiesNewTimeWindows.csv')
 df_employees = pd.read_csv(os.getcwd()+'/Input/'+reading_instance_file+'/employees.csv')
 df_shifts = pd.read_csv(os.getcwd()+'/Input/Shifts.csv')
 df_patterns = pd.read_csv(os.getcwd()+'/Input/Patterns.csv')
+
+#Funksjon for å legge til dummy nodes nederst
+def add_dummy_nodes(df_nodes, df_employees, file_path):
+    # Remove previously added dummy nodes
+    print(f"Original number of activities: {len(df_nodes)}")
+    df_nodes_new = df_nodes[df_nodes['activityType'] != 'D']
+    print(f"Number of activities after removing 'D': {len(df_nodes_new)}")
+    df_nodes_new.to_csv(file_path, index=False)
+
+    max_activity_id = df_nodes_new['activityId'].max()
+    max_visit_id = df_nodes_new['visitId'].max()
+    max_treatment_id = df_nodes_new['treatmentId'].max()
+    max_patient_id = df_nodes_new['patientId'].max()
+    days = [1,2,3,4,5]
+    employees = []
+    for employee_id in df_employees['employeeId']:
+        if employee_id not in employees:
+            employees.append(employee_id)
+    print("employees", employees)
+    
+    dummy_activities = []
+    restricted_employees = employees
+    emp_count = 0
+
+    for _, emp_row in df_employees.iterrows():
+        emp_count += 1
+        for remp in restricted_employees:
+            if remp == emp_count:
+                restricted_employees.remove(remp)
+        print('restricted', restricted_employees)
+        for day in days:
+            max_activity_id += 1
+            max_visit_id += 1
+            max_treatment_id += 1
+            max_patient_id += 1
+            dummy_activity = {
+                'activityId': max_activity_id,
+                'patientId': max_patient_id,  
+                'activityType': 'D',
+                'numActivitiesInVisit': 1,
+                'earliestStartTime': 480,
+                'latestStartTime': 960,
+                'duration': 0,
+                'skillRequirement': 1,
+                'visitId': max_visit_id, 
+                'treatmentId': max_treatment_id,
+                'location': '(59.9365, 10.7396)',
+                'employeeRestriction': [restricted_employees],
+                'heaviness': 1,
+                'utility': 0,
+                'allocation': 0, 
+                'patternType': 6,
+                'continuityGroup': 1,
+                'a_complexity': 0,
+                'v_complexity': 0,
+                'nActInTreat': 1,
+                't_complexity': 0,
+                'nActInPatient': 1,
+            }
+        dummy_activities.append(dummy_activity)
+        restricted_employees.append(remp)
+
+    df_dummy_activities = pd.DataFrame(dummy_activities)
+    df_nodes_new = pd.concat([df_nodes_new, df_dummy_activities], ignore_index=True)
+    df_nodes_new.to_csv(file_path, index=False)
+
+# Usage
+activities_file_path = os.getcwd()+'/Input/'+reading_instance_file+'/activitiesNewTimeWindows.csv'
+add_dummy_nodes(df_nodes, df_employees, activities_file_path)
 
 # Funksjon for å konvertere formatet på nextPrece-kolonnen
 def convert_precedence_format(s):
