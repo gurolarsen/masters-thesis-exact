@@ -59,7 +59,7 @@ def run_model():
             + weight_S*gp.quicksum(x_ijed[i, j, e, d] * (Q_e[e] - Q_i[j])
                         for d in DAYS
                         for e in EMPLOYEES_ON_DAY[d]
-                        for j in ACTIVITIES_WITHOUT_DUMMY
+                        for j in ACTIVITIES
                         for i in setOFI_iActDepo_jAct[d][e][j]),
             index=2, priority=2)
         
@@ -95,7 +95,9 @@ def run_model():
         add_subtour_contraint(m,POS_SUBTOURS, x_ijed)    
         #add_symmterty_breaking_logPersonell(m, x_ijed)
         add_symmterty_breaking_syncAct(m, x_ijed)
-        #m.addConstr(h_p[22]==1,  name='lock_patient')
+        m.addConstr(h_p[9]==1,  name='lock_patient9')
+        m.addConstr(h_p[17]==1,  name='lock_patient17')
+        m.addConstr(h_p[19]==1,  name='lock_patient19')
         
         # Åpne filen for å skrive
         with open("results.txt", "w") as log_file:
