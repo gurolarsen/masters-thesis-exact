@@ -104,7 +104,7 @@ def getPresNode(pres_node):
         return int(pres_node.split(":")[0])
     return pres_node
 
-
+PATIENTS_ALLOCATED = []
 for node in nested_dict_nodes:
     if nested_dict_nodes[node]["synchronisation"] != 0 and node < nested_dict_nodes[node]["synchronisation"] :
         SYNCHRONISED_NODE_PAIRS.append((node, nested_dict_nodes[node]["synchronisation"]))
@@ -112,6 +112,9 @@ for node in nested_dict_nodes:
         PRECEDENCE_NODE_PAIRS.append((node, getPresNode(pres_node)))
     if nested_dict_nodes[node]["sameEmployeeActivityId"] != 0 and node < nested_dict_nodes[node]["sameEmployeeActivityId"] :
         SAME_EMPLOYEE_NODE_PAIRS.append((node, nested_dict_nodes[node]["sameEmployeeActivityId"]))
+    if nested_dict_nodes[node]['allocation'] == 1 and nested_dict_nodes[node]['patientId'] not in PATIENTS_ALLOCATED: 
+        PATIENTS_ALLOCATED.append(nested_dict_nodes[node]['patientId'] )
+    
 
 
 
@@ -124,5 +127,8 @@ Alternativer:
 
 
 '''
+
+print("PATIENTS_ALLOCATED", PATIENTS_ALLOCATED)
+
 
 

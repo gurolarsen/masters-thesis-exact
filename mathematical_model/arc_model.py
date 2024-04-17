@@ -72,6 +72,7 @@ def run_model():
             index=3, priority=1)
             
         # CONSTRAINTS
+        add_vrp0_constraint(m, h_p)
         add_vrp1_constraint(m, x_ijed, h_p)
         add_vrp2_constraint(m, x_ijed)
         add_vrp3_constraint(m, x_ijed)

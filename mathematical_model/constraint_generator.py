@@ -2,6 +2,12 @@ from data_generation.set_functions import *
 from mathematical_model.variable_generator import *
 
 bigM = 2000  # må finne ut hva vi skal gjøre med bigM
+def add_vrp0_constraint(model,  h_p):
+    print("Entered vrp0")
+    model.addConstrs(( h_p[p] == 1
+                      for p in PATIENTS_ALLOCATED), name='vrp0')
+    
+
 def add_vrp1_constraint(model, x_ijed, h_p):
     print("Entered VRP1")
     model.addConstrs((gp.quicksum(x_ijed[i, j, e, d]
