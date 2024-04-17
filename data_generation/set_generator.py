@@ -126,3 +126,7 @@ Alternativer:
 '''
 
 
+ACTIVITIES_DUMMY = []
+for act in ACTIVITIES: 
+    if act not in ACTIVITIES_WITHOUT_DUMMY: 
+        ACTIVITIES_DUMMY.append(act)

@@ -11,7 +11,7 @@ def add_vrp1_constraint(model, x_ijed, h_p):
                       - h_p[p] == 0
                       for p in PATIENTS
                       for v in VISITS_FOR_PATIENT[p]
-                      for j in ACTIVITIES_IN_VISIT[v]), name='vrp1')
+                      for j in ACTIVITIES_IN_VISIT[v] if j not in ACTIVITIES_DUMMY), name='vrp1')
 
 
 def add_vrp2_constraint(model, x_ijed):
@@ -45,6 +45,20 @@ def add_vrp4_constraint(model, x_ijed):
                       for j in ACTIVITIES
                       for d in DAYS
                       for e in EMPLOYEES_ON_DAY[d]), name='vrp4')
+    
+'''
+Det er ingen tidsvinduere på disse nodene. 
+Kan det bli noe feil når vi henter ut 
+Må teste endringene opp mot data som er 
+
+Det er bare lov å kjøre til og fra dummynode fra depoet. - Gjort 
+
+Hva er problemet med å bare kjøre 
+
+TODO: Usikker på disse med hp, tror den kan settes til å bare gjelde de andre 
+
+Har ikke lagt inn på heaviness constraintsene. Sjekker først hvodan det blir 
+'''
 
 def add_tw1_constraint(model, s_i, D_i, T_ij, bigM_ij_tw1, x_ijed):
     print("Entered TW1")
@@ -54,8 +68,8 @@ def add_tw1_constraint(model, s_i, D_i, T_ij, bigM_ij_tw1, x_ijed):
                                         for e in setOFE_iAct_jAct[d][i][j]))
                                         #getSetOfeNY(d,EMPLOYEES_ON_DAY[d], ACTIVITIES, ACTIVITIES)[i][j]))
                             - s_i[j] <= 0
-                      for i in ACTIVITIES
-                      for j in ACTIVITIES if i != j), name='tw1')
+                      for i in ACTIVITIES_WITHOUT_DUMMY
+                      for j in ACTIVITIES_WITHOUT_DUMMY if i != j), name='tw1')
 
 
 def add_tw2_constraint(model, S_start_de, T_ij, bigM_j_tw2, x_ijed, s_i):
@@ -68,7 +82,7 @@ def add_tw2_constraint(model, S_start_de, T_ij, bigM_j_tw2, x_ijed, s_i):
                                         for d in DAYS
                                         for e in setOFE_iActDepo_jAct[d][0][j]))
                                  <= s_i[j]
-                      for j in ACTIVITIES), name='tw2')
+                      for j in ACTIVITIES_WITHOUT_DUMMY), name='tw2')
 
 #Ikke aggregert tw2 contraint
 """
@@ -89,7 +103,7 @@ def add_tw3_constraint(model, s_i, D_i, T_ij, bigM_i_tw3, x_ijed, S_end_de):
                       <= gp.quicksum(S_end_de[d][e] * x_ijed[i, 0, e, d]
                                         for d in DAYS
                                         for e in setOFE_iAct_jActDepo[d][i][0])
-                      for i in ACTIVITIES), name='tw3')
+                      for i in ACTIVITIES_WITHOUT_DUMMY), name='tw3')
 
 """
 def add_tw3_constraint_NOT_IN_USE(model, s_i, D_i, T_ij, bigM, x_ijed, S_end_de):
@@ -120,17 +134,17 @@ def add_tw4_constraint(model, x_ijed, delta_i):
                               for e in EMPLOYEES_ON_DAY[d]
                               for i in setOFI_iActDepo_jAct[d][e][j]) == delta_i[j]
                                   #getSetOfiNY(d, EMPLOYEES_ON_DAY[d], ACTIVITIES_DEPOT, ACTIVITIES)[e][j])
-                      for j in ACTIVITIES), name='tw4')
+                      for j in ACTIVITIES_WITHOUT_DUMMY), name='tw4')
 
 def add_tw5_constraint(model, T_earliest_i, delta_i, s_i):
     print("Entered TW5")
     model.addConstrs((T_earliest_i[i] * delta_i[i] <= s_i[i]
-                      for i in ACTIVITIES), name='tw5')
+                      for i in ACTIVITIES_WITHOUT_DUMMY), name='tw5')
 
 def add_tw6_constraint(model, delta_i, s_i, T_latest_i):
     print("Entered TW6")
     model.addConstrs((T_latest_i[i] * delta_i[i] >= s_i[i]
-                      for i in ACTIVITIES), name='tw6')
+                      for i in ACTIVITIES_WITHOUT_DUMMY), name='tw6')
 
 def add_period1_constraint(model, y_bc, h_p):
     print("Entered Period1")
@@ -149,7 +163,7 @@ def add_period2_constraint(model, x_ijed, A_bvcd, y_bc):
                                   for c in PATTERNS_FOR_TREATMENT[b]) <= 0
                      for b in TREATMENTS
                      for v in VISITS_IN_TREATMENT[b]
-                     for j in ACTIVITIES_IN_VISIT[v]
+                     for j in ACTIVITIES_IN_VISIT[v] if j not in ACTIVITIES_DUMMY
                      for d in DAYS), name='period2')
 
 
@@ -260,4 +274,21 @@ def add_symmterty_breaking_syncAct(model, x_ijed):
                                  <= 0
                     for i, j in SYNCHRONISED_NODE_PAIRS), name='tw2')
 
+
+def add_dummy1_constraint(model, x_ijed):
+    print("Entered dummy1")
+    model.addConstrs((gp.quicksum(x_ijed[i, j, e, d]
+                                  for d in DAYS
+                                  for e in EMPLOYEES_ON_DAY[d]
+                                  for i in setOFI_iAct_jAct[d][e][j])
+                      == 0
+                      for j in ACTIVITIES_DUMMY), name='dummy1')
     
+def add_dummy2_constraint(model, x_ijed):
+    print("Entered dummy2")
+    model.addConstrs((gp.quicksum(x_ijed[i, j, e, d]
+                                  for d in DAYS
+                                  for e in EMPLOYEES_ON_DAY[d]
+                                  for j in setOFJ_iAct_jAct[d][e][i])
+                      == 0
+                      for i in ACTIVITIES_DUMMY), name='dummy2')
