@@ -2,6 +2,9 @@ from data_generation.set_functions import *
 from mathematical_model.variable_generator import *
 
 bigM = 2000  # må finne ut hva vi skal gjøre med bigM
+
+
+
 def add_vrp1_constraint(model, x_ijed, h_p):
     print("Entered VRP1")
     model.addConstrs((gp.quicksum(x_ijed[i, j, e, d]
