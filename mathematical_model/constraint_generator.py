@@ -242,6 +242,24 @@ def add_heaviness4_constraint(model, H_i, x_ijed, h_avg_under_g):
                       >= h_avg_under_g[g]
                      for d in DAYS
                      for g in PROFESSION_GROUPS), name='heaviness4')
+    
+print("ACTIVITIES_WITH_PREFERRED_SPECIALITY - 2", ACTIVITIES_WITH_PREFERRED_SPECIALITY)
+# -------- NYE PREFERRED SPECIALISATION ----------------------
+def add_preferred_speciality1_constraint(model, L_e, F_i, x_ijed, z_i):
+    print("PrefSpeciality1")
+    model.addConstrs((gp.quicksum((L_e[e]-F_i[j]) * x_ijed[i, j, e, d]
+                                  for i in setOFI_iActDepo_jAct[d][e][j]) -(L_e[e]-F_i[j])*z_i[j] <= 0
+                     for d in DAYS
+                     for e in EMPLOYEES_ON_DAY[d]
+                     for j in ACTIVITIES_WITH_PREFERRED_SPECIALITY), name='PrefSpeciality1')
+
+def add_preferred_speciality2_constraint(model, L_e, F_i, x_ijed, z_i):
+    print("PrefSpeciality2")
+    model.addConstrs((gp.quicksum((L_e[e]-F_i[j]) * x_ijed[i, j, e, d]
+                                  for i in setOFI_iActDepo_jAct[d][e][j]) + (L_e[e]-F_i[j])*z_i[j] >= 0
+                     for d in DAYS
+                     for e in EMPLOYEES_ON_DAY[d]
+                     for j in ACTIVITIES_WITH_PREFERRED_SPECIALITY), name='PrefSpeciality2')
 
 def add_subtour_contraint(model, SUB_SETS, x_ijed):
     print("SubtourGenerator")

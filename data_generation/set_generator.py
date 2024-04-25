@@ -105,6 +105,9 @@ def getPresNode(pres_node):
     return pres_node
 
 PATIENTS_ALLOCATED = []
+ACTIVITIES_WITH_PREFERRED_SPECIALITY = []
+
+
 for node in nested_dict_nodes:
     if nested_dict_nodes[node]["synchronisation"] != 0 and node < nested_dict_nodes[node]["synchronisation"] :
         SYNCHRONISED_NODE_PAIRS.append((node, nested_dict_nodes[node]["synchronisation"]))
@@ -114,6 +117,9 @@ for node in nested_dict_nodes:
         SAME_EMPLOYEE_NODE_PAIRS.append((node, nested_dict_nodes[node]["sameEmployeeActivityId"]))
     if nested_dict_nodes[node]['allocation'] == 1 and nested_dict_nodes[node]['patientId'] not in PATIENTS_ALLOCATED: 
         PATIENTS_ALLOCATED.append(nested_dict_nodes[node]['patientId'] )
+
+    if nested_dict_nodes[node]["specialisationPreferred"] > 0:
+        ACTIVITIES_WITH_PREFERRED_SPECIALITY.append(node)
     
 
 
@@ -128,7 +134,6 @@ Alternativer:
 
 '''
 
-print("PATIENTS_ALLOCATED", PATIENTS_ALLOCATED)
 
 
 
@@ -136,3 +141,4 @@ ACTIVITIES_DUMMY = []
 for act in ACTIVITIES: 
     if act not in ACTIVITIES_WITHOUT_DUMMY: 
         ACTIVITIES_DUMMY.append(act)
+

@@ -36,10 +36,13 @@ for pres_pair in PRECEDENCE_NODE_PAIRS:
 S_start_de = {day: {employee: [] for employee in EMPLOYEES_ON_DAY[day]} for day in DAYS}     #start time for employee
 S_end_de = {day: {employee: [] for employee in EMPLOYEES_ON_DAY[day]} for day in DAYS}      #end time for employee e shift on day d
 Q_e = {employee: [] for employee in EMPLOYEES}        #qualification level of employee e
+L_e = {employee: None for employee in EMPLOYEES}       #Spessialisation level of employee e 
+
 
 
 for employee in EMPLOYEES:
     Q_e[employee] = nested_dict_employees[employee]["professionalLevel"]
+    L_e[employee] = nested_dict_employees[employee]["clinic"]
     for shift in list(nested_dict_employees[employee]["schedule"]):
         S_start_de[nested_dict_shifts[shift]["Day"]][employee] = nested_dict_shifts[shift]["Start"]
         S_end_de[nested_dict_shifts[shift]["Day"]][employee] = nested_dict_shifts[shift]["End"]
@@ -140,7 +143,12 @@ for i in ACTIVITIES_HEALTH_CARE:
 
 
         
-
+F_i = {act: None for act in ACTIVITIES_WITH_PREFERRED_SPECIALITY}
+for node in ACTIVITIES_WITH_PREFERRED_SPECIALITY: 
+    F_i[node] = nested_dict_nodes[node]["specialisationPreferred"]
 
 #Key er score, og listen er ansattte som er preferert
 #Står verdier for alle, men det gjelder bare helseaktivitetene ¨
+
+print("ACTIVITIES_WITH_PREFERRED_SPECIALITY", ACTIVITIES_WITH_PREFERRED_SPECIALITY)
+print("F_i", F_i)

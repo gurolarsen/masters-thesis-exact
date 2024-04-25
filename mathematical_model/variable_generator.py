@@ -5,6 +5,7 @@ from data_generation.data import *
 from data_generation.set_generator import *
 from data_generation.set_functions import *
 
+
 def initialize_arc_flow_variables(model):
     #TODO: Må se om vi skal håndtere depoet på et vis (hvis i eller j er 0)
     count = 0
@@ -75,6 +76,12 @@ def initalize_lowest_avg_heaviness_variables(model):
         h_avg_under_g[g] = model.addVar(vtype=gp.GRB.INTEGER, name=f'h_avg_under_{g}')
     return h_avg_under_g
 
+
+def initialize_preferred_speciality_variables(model):
+    z_i = {}
+    for i in ACTIVITIES_WITH_PREFERRED_SPECIALITY:
+        z_i[i] = model.addVar(vtype=gp.GRB.BINARY, ub=1440, name=f's_{i}')
+    return z_i
 #TESTING
 #test_model = gp.Model("testModel")
 #x = initialize_arc_flow_variables(test_model)

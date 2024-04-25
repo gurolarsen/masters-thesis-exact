@@ -1,0 +1,30 @@
+Set parameter IntFeasTol to value 1e-07
+Gurobi Optimizer version 11.0.1 build v11.0.1rc0 (win64 - Windows 10.0 (19045.2))
+
+CPU model: Intel(R) Core(TM) i7-10700 CPU @ 2.90GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 8 physical cores, 16 logical processors, using up to 16 threads
+
+Academic license 2500742 - for non-commercial use only - registered to gu___@stud.ntnu.no
+Optimize a model with 647772 rows, 115264 columns and 3555985 nonzeros
+Model fingerprint: 0x84cbe151
+Variable types: 0 continuous, 115264 integer (115038 binary)
+Coefficient statistics:
+  Matrix range     [5e-01, 1e+03]
+  Objective range  [5e-02, 6e+01]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [2e-01, 1e+04]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 4 objectives ... 
+---------------------------------------------------------------------------
+
+Multi-objectives: applying initial presolve ...
+---------------------------------------------------------------------------
+
+Presolve removed 257568 rows and 69029 columns
+Presolve time: 0.36s
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.45 seconds (0.38 work units)
+Model is infeasible
+
