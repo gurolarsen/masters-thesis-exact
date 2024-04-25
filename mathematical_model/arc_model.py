@@ -97,6 +97,9 @@ def run_model():
         #add_symmterty_breaking_logPersonell(m, x_ijed)
         add_symmterty_breaking_syncAct(m, x_ijed)
         #m.addConstr(h_p[22]==1,  name='lock_patient')
+        add_dummy1_constraint(m, x_ijed)
+        add_dummy2_constraint(m, x_ijed)
+
         
         # Åpne filen for å skrive
         with open("results.txt", "w") as log_file:

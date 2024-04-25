@@ -291,6 +291,9 @@ setOFE_iAct_jAct = {d: {} for d in DAYS}
 setOFE_iActDepo_jAct = {d: {} for d in DAYS}
 setOFE_iAct_jActDepo= {d: {} for d in DAYS}
 
+#Denne er ny 
+setOFI_iAct_jAct = {d: {} for d in DAYS}
+
 for d in DAYS:
     #Brukes til variable generator
     setOFJ_iActDepo_jActDepo[d] = getSetOfjNY(d, EMPLOYEES_ON_DAY[d], ACTIVITIES_DEPOT, ACTIVITIES_DEPOT)
@@ -313,6 +316,8 @@ for d in DAYS:
     #Subtourcosntrint
     setOFJ_iAct_jAct[d] = getSetOfjNY(d, EMPLOYEES_ON_DAY[d], ACTIVITIES, ACTIVITIES)
 
+    #Denne er ny 
+    setOFI_iAct_jAct[d] = getSetOfiNY(d, EMPLOYEES_ON_DAY[d], ACTIVITIES, ACTIVITIES)
 
 
 def checkIfSgeneratesanyX(e, d, S):
