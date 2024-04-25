@@ -11,7 +11,7 @@ from mathematical_model.constraint_generator import *
 from data_generation.parameter_generator import *
 
 # Weights for objectives
-weight_C = 0.0              # Max continuity of care #TODO: Hvorfor har vi denne??
+weight_C = 0.0              # Max continuity of care
 weight_DW = 0.3             # Balance daily workload
 weight_WW = 0.3             # Balance weekly workload
 weight_S = 0.2              # Min skill difference
@@ -62,10 +62,9 @@ def run_model():
                         for e in EMPLOYEES_ON_DAY[d]
                         for j in ACTIVITIES_WITHOUT_DUMMY
                         for i in setOFI_iActDepo_jAct[d][e][j])
-
-            + weight_SG*gp.quicksum(z_i[i]
+                        
+            + weight_SG *gp.quicksum(z_i[i]
                         for i in ACTIVITIES_WITH_PREFERRED_SPECIALITY),
-
             index=2, priority=2)
         
         m.setObjectiveN(
@@ -98,10 +97,10 @@ def run_model():
         add_heaviness2_constraint(m, H_i, x_ijed, h_under_dg)
         add_heaviness3_constraint(m, H_i, x_ijed,h_avg_over_g)
         add_heaviness4_constraint(m, H_i, x_ijed, h_avg_under_g)
-        add_preferred_speciality1_constraint(m, L_e, F_i, x_ijed, z_i)
-        add_preferred_speciality2_constraint(m, L_e, F_i, x_ijed, z_i)
 
-        
+        add_preferred_speciality1_constraint(m, L_e, F_i, x_ijed, z_i)
+        add_preferred_speciality1_constraint(m, L_e, F_i, x_ijed, z_i)
+
 
         add_subtour_contraint(m,POS_SUBTOURS, x_ijed)    
         #add_symmterty_breaking_logPersonell(m, x_ijed)

@@ -152,3 +152,9 @@ for node in ACTIVITIES_WITH_PREFERRED_SPECIALITY:
 
 print("ACTIVITIES_WITH_PREFERRED_SPECIALITY", ACTIVITIES_WITH_PREFERRED_SPECIALITY)
 print("F_i", F_i)
+
+L_e_max = max(L_e.values()) 
+L_e_min = min(L_e.values())
+
+print("L_e_max", L_e_max)
+print("L_e_min", L_e_min)
