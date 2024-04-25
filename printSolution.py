@@ -2,6 +2,7 @@ def process_results(file_path):
     # Initialize storage for parsed data
     assignments = []
     start_times = {}
+    objective = []
 
     # Read and parse the file
     with open(file_path, 'r') as file:
@@ -17,6 +18,11 @@ def process_results(file_path):
                 variable, start_time = parts[0], float(parts[1])
                 activity = int(variable.split('_')[1])
                 start_times[activity] = start_time
+            if line.startswith('Solution count '):
+                parts = line.split()
+                objective.append(parts[3])
+
+
 
     # Organize data by day and employee
     organized_info = {}
@@ -36,6 +42,8 @@ def process_results(file_path):
     # Write the organized information to a new file
     output_file_path = file_path.replace('.txt', '_organized.txt')
     with open(output_file_path, 'w') as output_file:
+        output_file.write(f"objective {objective}\n")
+        output_file.write(f"    \n")
         for day in sorted(organized_info):
             for employee in sorted(organized_info[day]):
                 output_file.write(f"DAG {day} ANSATT {employee}\n")
