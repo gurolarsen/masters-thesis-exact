@@ -2,6 +2,13 @@ import pandas as pd
 import copy
 import os
 
+# Weights for objectives
+weight_C = 0.0              # Max continuity of care
+weight_DW = 0.3             # Balance daily workload
+weight_WW = 0.3             # Balance weekly workload
+weight_S = 0.2              # Min skill difference
+weight_SG = 0.2             # Balance specialist/generalist
+
 # Reading instance
 reading_instance_file = "newDataStructure"
 print("RUNNING MODEL FOR TEST INSTANCE: ", reading_instance_file)

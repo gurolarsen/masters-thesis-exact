@@ -1,8 +1,11 @@
+from data_generation.data import weight_DW, weight_WW, weight_S, weight_SG 
+
 def process_results(file_path):
     # Initialize storage for parsed data
     assignments = []
     start_times = {}
     objective = []
+    objective3 = []
 
     # Read and parse the file
     with open(file_path, 'r') as file:
@@ -21,6 +24,12 @@ def process_results(file_path):
             if line.startswith('Solution count '):
                 parts = line.split()
                 objective.append(parts[3])
+            if line.startswith("Solution:"): 
+                parts = line.split()
+                objective3 = parts[3:7]
+    objective3 = [float(obj) for obj in objective3]
+    objective[2] = objective3[0]*weight_DW + objective3[1]*weight_WW + objective3[2]*weight_S + objective3[3]*weight_SG
+
 
 
 
@@ -43,6 +52,7 @@ def process_results(file_path):
     output_file_path = file_path.replace('.txt', '_organized.txt')
     with open(output_file_path, 'w') as output_file:
         output_file.write(f"objective {objective}\n")
+        output_file.write(f"objective3 {objective3}\n")
         output_file.write(f"    \n")
         for day in sorted(organized_info):
             for employee in sorted(organized_info[day]):

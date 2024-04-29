@@ -1,0 +1,82 @@
+objective ['-11', '-6', 10.600000000000001, '311.966']
+objective3 [10.0, 0.0, 38.0, 0.0]
+    
+DAG 1 ANSATT 1
+activity 60 start 672.0
+activity 61 start 688.0
+activity 62 start 698.0
+activity 63 start 758.0
+activity 40 start 774.0
+activity 64 start 821.0
+activity 41 start 851.0
+activity 42 start 861.0
+activity 43 start 901.0
+activity 44 start 950.0
+---------------------
+DAG 1 ANSATT 2
+---------------------
+DAG 1 ANSATT 3
+---------------------
+DAG 2 ANSATT 1
+activity 1 start 480.0
+activity 2 start 510.0
+activity 3 start 520.0
+activity 4 start 560.0
+activity 50 start 645.0
+activity 5 start 655.0
+activity 65 start 742.0
+activity 51 start 765.0
+activity 52 start 775.0
+activity 53 start 815.0
+activity 66 start 841.0
+activity 67 start 851.0
+activity 54 start 877.0
+---------------------
+DAG 2 ANSATT 2
+---------------------
+DAG 2 ANSATT 3
+---------------------
+DAG 3 ANSATT 1
+activity 68 start 630.0
+activity 69 start 646.0
+activity 70 start 760.0
+---------------------
+DAG 3 ANSATT 2
+---------------------
+DAG 3 ANSATT 3
+---------------------
+DAG 4 ANSATT 1
+activity 71 start 630.0
+activity 72 start 646.0
+activity 73 start 656.0
+activity 74 start 716.0
+activity 45 start 732.0
+activity 75 start 742.0
+activity 46 start 772.0
+activity 47 start 782.0
+activity 48 start 822.0
+activity 49 start 871.0
+---------------------
+DAG 4 ANSATT 2
+---------------------
+DAG 4 ANSATT 3
+---------------------
+DAG 5 ANSATT 1
+activity 55 start 480.0
+activity 56 start 503.0
+activity 57 start 513.0
+activity 58 start 553.0
+activity 59 start 610.0
+activity 6 start 620.0
+activity 76 start 630.0
+activity 77 start 646.0
+activity 78 start 695.0
+activity 7 start 740.0
+activity 8 start 750.0
+activity 9 start 861.0
+activity 10 start 910.0
+---------------------
+DAG 5 ANSATT 2
+---------------------
+DAG 5 ANSATT 3
+---------------------

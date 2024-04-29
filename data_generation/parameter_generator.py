@@ -4,6 +4,12 @@ import math
 import ast
 from .distance_matrix import travel_matrix
 
+# Weights for objectives
+weight_C = 0.0              # Max continuity of care
+weight_DW = 0.3             # Balance daily workload
+weight_WW = 0.3             # Balance weekly workload
+weight_S = 0.2              # Min skill difference
+weight_SG = 0.2             # Balance specialist/generalist
 
 D_i = {key: int for key in ACTIVITIES}
 T_earliest_i =  {key: int for key in ACTIVITIES} #idexed by day and employee
@@ -153,8 +159,8 @@ for node in ACTIVITIES_WITH_PREFERRED_SPECIALITY:
 print("ACTIVITIES_WITH_PREFERRED_SPECIALITY", ACTIVITIES_WITH_PREFERRED_SPECIALITY)
 print("F_i", F_i)
 
-L_e_max = max(L_e.values()) 
-L_e_min = min(L_e.values())
+L_e_max = max(list(F_i.values()) + list(L_e.values())) 
+L_e_min = min(list(F_i.values()) + list(L_e.values())) 
 
 print("L_e_max", L_e_max)
 print("L_e_min", L_e_min)

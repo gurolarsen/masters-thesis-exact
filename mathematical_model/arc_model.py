@@ -50,6 +50,27 @@ def run_model():
             index=1, priority=3, weight=-1)
         
         m.setObjectiveN(
+            gp.quicksum(h_avg_over_g[g] - h_avg_under_g[g]
+                        for g in PROFESSION_GROUPS), index=2, priority=2)
+        
+        m.setObjectiveN(
+            gp.quicksum(h_over_dg[d, g] - h_under_dg[d, g]
+                        for d in DAYS
+                        for g in EMPLOYEES_ON_DAY_IN_GROUP[d]), index=3, priority=2)
+        
+        m.setObjectiveN(
+            gp.quicksum(x_ijed[i, j, e, d] * (Q_e[e] - Q_i[j])
+                        for d in DAYS
+                        for e in EMPLOYEES_ON_DAY[d]
+                        for j in ACTIVITIES_WITHOUT_DUMMY
+                        for i in setOFI_iActDepo_jAct[d][e][j]), index=4, priority=2)
+        
+        m.setObjectiveN( 
+            gp.quicksum(z_i[i]
+                        for i in ACTIVITIES_WITH_PREFERRED_SPECIALITY), index=5, priority=2)
+        
+        '''
+        m.setObjectiveN(
             weight_WW*gp.quicksum(h_avg_over_g[g] - h_avg_under_g[g]
                         for g in PROFESSION_GROUPS)
 
@@ -66,6 +87,7 @@ def run_model():
             + weight_SG *gp.quicksum(z_i[i]
                         for i in ACTIVITIES_WITH_PREFERRED_SPECIALITY),
             index=2, priority=2)
+        '''
         
         m.setObjectiveN(
             gp.quicksum(T_ij[i][j] * x_ijed[i, j, e, d]
@@ -73,7 +95,7 @@ def run_model():
                         for e in EMPLOYEES_ON_DAY[d]
                         for i in ACTIVITIES_DEPOT
                         for j in setOFJ_iActDepo_jActDepo[d][e][i]),
-            index=3, priority=1)
+            index=6, priority=1)
             
         # CONSTRAINTS
         add_vrp0_constraint(m, h_p)
@@ -99,7 +121,7 @@ def run_model():
         add_heaviness4_constraint(m, H_i, x_ijed, h_avg_under_g)
 
         add_preferred_speciality1_constraint(m, L_e, F_i, x_ijed, z_i)
-        add_preferred_speciality1_constraint(m, L_e, F_i, x_ijed, z_i)
+        add_preferred_speciality2_constraint(m, L_e, F_i, x_ijed, z_i)
 
 
         add_subtour_contraint(m,POS_SUBTOURS, x_ijed)    
@@ -128,6 +150,15 @@ def run_model():
                     print(f'{v.VarName:10s} {v.X}')
 
             # Tilbakestill sys.stdout til original
+
+            print('Solution:', end='')
+            nObjectives = m.NumObj
+            for o in range(nObjectives):
+                # Set which objective we will query
+                m.params.ObjNumber = o
+                # Query the o-th objective value
+                print(' ',m.ObjNVal, end='')
+
             sys.stdout = original_stdout
         
         # Writing to terminal
