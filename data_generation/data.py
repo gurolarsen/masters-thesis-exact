@@ -10,7 +10,7 @@ weight_S = 0.2              # Min skill difference
 weight_SG = 0.2             # Balance specialist/generalist
 
 # Reading instance
-reading_instance_file = "newDataStructure"
+reading_instance_file = "data"
 print("RUNNING MODEL FOR TEST INSTANCE: ", reading_instance_file)
 #Her kan jeg lage funksjon som adder ekstra aktiviteter som er dumme:))
 df_nodes = pd.read_csv(os.getcwd()+'/Input/'+reading_instance_file+'/activitiesNewTimeWindows.csv')
