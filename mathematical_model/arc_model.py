@@ -41,33 +41,35 @@ def run_model():
             index=0, priority=4, weight=-1)
         
         #Kommentar om j og i 
+        
+        
+        m.setObjectiveN(
+            weight_WW*gp.quicksum(h_avg_over_g[g] - h_avg_under_g[g]
+                        for g in PROFESSION_GROUPS), index=2, priority=3)
+        
+        m.setObjectiveN(
+            weight_DW*gp.quicksum(h_over_dg[d, g] - h_under_dg[d, g]
+                        for d in DAYS
+                        for g in EMPLOYEES_ON_DAY_IN_GROUP[d]), index=3, priority=3)
+        
+        m.setObjectiveN(
+            weight_S*gp.quicksum(x_ijed[i, j, e, d] * (Q_e[e] - Q_i[j])
+                        for d in DAYS
+                        for e in EMPLOYEES_ON_DAY[d]
+                        for j in ACTIVITIES_WITHOUT_DUMMY
+                        for i in setOFI_iActDepo_jAct[d][e][j]), index=4, priority=3)
+        
+        m.setObjectiveN( 
+            weight_SG* gp.quicksum(z_i[i]
+                        for i in ACTIVITIES_WITH_PREFERRED_SPECIALITY), index=5, priority=3)
+        
         m.setObjectiveN(
             gp.quicksum(C_ie[j][e] * x_ijed[i, j, e, d]
                         for d in DAYS
                         for e in EMPLOYEES_ON_DAY[d]
                         for j in ACTIVITIES_HEALTH_CARE
                         for i in setOFI_iActDepo_jAct[d][e][j]),
-            index=1, priority=3, weight=-1)
-        
-        m.setObjectiveN(
-            gp.quicksum(h_avg_over_g[g] - h_avg_under_g[g]
-                        for g in PROFESSION_GROUPS), index=2, priority=2)
-        
-        m.setObjectiveN(
-            gp.quicksum(h_over_dg[d, g] - h_under_dg[d, g]
-                        for d in DAYS
-                        for g in EMPLOYEES_ON_DAY_IN_GROUP[d]), index=3, priority=2)
-        
-        m.setObjectiveN(
-            gp.quicksum(x_ijed[i, j, e, d] * (Q_e[e] - Q_i[j])
-                        for d in DAYS
-                        for e in EMPLOYEES_ON_DAY[d]
-                        for j in ACTIVITIES_WITHOUT_DUMMY
-                        for i in setOFI_iActDepo_jAct[d][e][j]), index=4, priority=2)
-        
-        m.setObjectiveN( 
-            gp.quicksum(z_i[i]
-                        for i in ACTIVITIES_WITH_PREFERRED_SPECIALITY), index=5, priority=2)
+            index=1, priority=2, weight=-1)
         
         '''
         m.setObjectiveN(
@@ -111,7 +113,7 @@ def run_model():
         add_tw6_constraint(m, delta_i, s_i, T_latest_i)
         add_period1_constraint(m, y_bc, h_p)
         add_period2_constraint(m, x_ijed, A_bvcd, y_bc)
-        add_sync_constraint(m, s_i)
+        #add_sync_constraint(m, s_i)
         add_precedence1_constraint(m, s_i, D_i, delta_i)
         add_precedence2_constraint(m, s_i, D_i, G_ij)
         add_precedence3_constraint(m, x_ijed)

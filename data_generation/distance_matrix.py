@@ -48,7 +48,7 @@ def travel_matrix(df):
         T_ij = [[0 for _ in range(len(D_ij))] for _ in range(len(D_ij))]
         for i in range(len(D_ij)):
             for j in range(len(D_ij)):
-                T_ij[i][j] = (timedelta(hours=(D_ij[i][j] / speed)).total_seconds() / 60)
+                T_ij[i][j] = math.ceil((timedelta(hours=(D_ij[i][j] / speed)).total_seconds() / 60))
     
         # Rush hour modelling:
         #TODO: Se på om vi må gjøre dette annerledes og generere rush hour factor basert på tiden som faktisk settes i heuristikken
@@ -57,11 +57,11 @@ def travel_matrix(df):
             # If start time is between 07 and 09. 
             if (df.iloc[k]["earliestStartTime"] >= 420 and df.iloc[k]["earliestStartTime"] <= 540) or (df.iloc[k]["latestStartTime"] >= 420 and df.iloc[k]["latestStartTime"] <= 540):
                 for l in range(len(T_ij)):
-                    T_ij[k][l] = T_ij[k][l]*rush_factor
+                    T_ij[k][l] = math.ceil(T_ij[k][l]*rush_factor)
             # If start time is between 15 and 17.
             if (df.iloc[k]["earliestStartTime"] >= 900 and df.iloc[k]["earliestStartTime"] <= 1020) or (df.iloc[k]["latestStartTime"] >= 900 and df.iloc[k]["latestStartTime"] <= 1020):
                 for l in range(len(T_ij)):
-                    T_ij[k][l] = T_ij[k][l]*rush_factor
+                    T_ij[k][l] = math.ceil(T_ij[k][l]*rush_factor)
         return T_ij
 
 
@@ -87,7 +87,7 @@ def travel_matrix_without_rush(df):
         T_ij = [[0 for _ in range(len(D_ij))] for _ in range(len(D_ij))]
         for i in range(len(D_ij)):
             for j in range(len(D_ij)):
-                T_ij[i][j] = (timedelta(hours=(D_ij[i][j] / speed)).total_seconds() / 60)
+                T_ij[i][j] = math.ceil((timedelta(hours=(D_ij[i][j] / speed)).total_seconds() / 60))
     
         return T_ij
 

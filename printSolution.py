@@ -5,7 +5,7 @@ def process_results(file_path):
     assignments = []
     start_times = {}
     objective = []
-    objective3 = []
+    objective2 = []
 
     # Read and parse the file
     with open(file_path, 'r') as file:
@@ -26,10 +26,25 @@ def process_results(file_path):
                 objective.append(parts[3])
             if line.startswith("Solution:"): 
                 parts = line.split()
-                objective3 = parts[3:7]
-    objective3 = [float(obj) for obj in objective3]
-    objective[2] = objective3[0]*weight_DW + objective3[1]*weight_WW + objective3[2]*weight_S + objective3[3]*weight_SG
-
+                objective2 = parts[3:7]
+                del parts[3:7]
+                print(parts, "parts")
+                del parts[0]
+                print("parts", parts)
+                if len(objective) != 4: 
+                    objective = objective + [0 for i in range(4-len(objective))]
+                if objective[0] == 0:  
+                    objective[0] = parts[0]
+                if objective[2] == 0:  
+                    objective[2] = parts[1]
+                if objective[3] == 0:  
+                    objective[3] = parts[2]
+               
+    print("objective2", objective2)
+    print("objective", objective)
+    objective2 = [float(obj) for obj in objective2]
+    objective[1] = objective2[0]/weight_DW + objective2[1]/weight_WW + objective2[2]/weight_S + objective2[3]/weight_SG
+    
 
 
 
@@ -52,7 +67,7 @@ def process_results(file_path):
     output_file_path = file_path.replace('.txt', '_organized.txt')
     with open(output_file_path, 'w') as output_file:
         output_file.write(f"objective {objective}\n")
-        output_file.write(f"objective3 {objective3}\n")
+        output_file.write(f"objective2 {objective2}\n")
         output_file.write(f"    \n")
         for day in sorted(organized_info):
             for employee in sorted(organized_info[day]):
@@ -65,5 +80,5 @@ def process_results(file_path):
 
 # Path to the uploaded results.txt file
 username = 'agnesost'
-file_path = 'c:\\Users\\'+username+'\\masters-thesis-exact\\results.txt'
+file_path = 'c:\\Users\\'+username+'\\masters-thesis-exact\\results1.txt'
 output_path = process_results(file_path)
