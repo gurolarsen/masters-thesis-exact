@@ -133,7 +133,7 @@ def run_model():
 
         
         # Åpne filen for å skrive
-        with open("results.txt", "w") as log_file:
+        with open("resultsTEST.txt", "w") as log_file:
             # Omdiriger sys.stdout til filen
             original_stdout = sys.stdout
             sys.stdout = log_file
